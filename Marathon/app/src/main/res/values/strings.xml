@@ -5,4 +5,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="tab1">起點(牌樓)</string>
+    <string name="tab2">長春祠</string>
+    <string name="tab3">燕子洞</string>
+    <string name="tab4">九曲洞</string>
+    <string name="tab5">天祥-終點</string>
+    <string name="tab6">花絮</string>
+    <string name="tab7">我最有型</string>
+
 </resources>
