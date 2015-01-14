@@ -1,6 +1,9 @@
 package com.example.terence.marathon;
 
 
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,20 +12,26 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 
 import com.example.terence.fragment.Fragment_1;
 import com.example.terence.fragment.Fragment_2;
 import com.example.terence.fragment.Fragment_all;
 
+import javax.xml.transform.OutputKeys;
 
 
 public class MainActivity extends FragmentActivity {
@@ -30,6 +39,8 @@ public class MainActivity extends FragmentActivity {
     public static final String ARGUMENTS_NAME = "arg";
     public static String[] tabTitle={"All","起點(牌樓)","長春祠","燕子洞","九曲洞","天祥","終點"};
     private ImageView imageView;
+    private ImageButton title_ib_right;
+    private TextView title_text;
     private RadioGroup mRadioGroup;
     private ViewPager mViewPager;
     private int indicatorWidth;
@@ -39,11 +50,14 @@ public class MainActivity extends FragmentActivity {
     private RelativeLayout rl;
     private HorizontalScrollView mHSV;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        title_ib_right = (ImageButton)findViewById(R.id.title_ib_right);
+        title_text = (TextView)findViewById(R.id.title_text);
         rl = (RelativeLayout) findViewById(R.id.rl_nav);
         mHSV = (HorizontalScrollView) findViewById(R.id.hsv);
         mRadioGroup = (RadioGroup) findViewById(R.id.radio_group);
@@ -52,6 +66,38 @@ public class MainActivity extends FragmentActivity {
 
         setListener();
         initView();
+
+        title_ib_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowAlertDialog(v);
+            }
+        });
+    }
+
+    private void ShowAlertDialog(View v){
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.edit_layout,(ViewGroup) findViewById(R.id.dialog));
+        new AlertDialog.Builder(this)
+                .setTitle("搜尋跑者")
+                .setView(layout)
+                .setPositiveButton("搜尋", null)
+                .show();
+        /*
+        AlertDialog.Builder MyAlerDialog = new AlertDialog.Builder(this);
+        MyAlerDialog.setTitle("我是標題").setMessage("123");
+        MyAlerDialog.setMessage("我是內容");
+
+        DialogInterface.OnClickListener OkClick = new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int which) {
+                //如果不做任何事情 就會直接關閉 對話方塊
+                }
+            };;
+        MyAlerDialog.setNeutralButton("中間按鈕",OkClick );
+
+        MyAlerDialog.show();
+        */
     }
 
     //監聽ViewPager和RadioGroup並進行相對顯示
