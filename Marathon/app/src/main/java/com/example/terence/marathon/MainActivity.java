@@ -188,7 +188,6 @@ public class MainActivity extends FragmentActivity {
 
             mRadioGroup.addView(rb);
         }
-
     }
 
     //FragmentPager的Adapter，用來指定各個Tab的頁面內容
