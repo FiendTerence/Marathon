@@ -36,7 +36,7 @@ public class Fragment_all extends Fragment {
         */
 
         mPhotoWall = (GridView)rootView.findViewById(R.id.photo_wall);
-        adapter = new PhotoWallAdapter(context, 0, photo_url.imageThumbUrls, mPhotoWall);
+        adapter = new PhotoWallAdapter(context, 0, photo_url.imageThumbUrls[0], mPhotoWall);
         mPhotoWall.setAdapter(adapter);
 
         return rootView;

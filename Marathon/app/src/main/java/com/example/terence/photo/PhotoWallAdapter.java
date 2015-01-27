@@ -19,6 +19,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.terence.marathon.R;
 
@@ -54,6 +55,10 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements OnScrollLi
      */
     private boolean isFirstEnter = true;
 
+    private TextView tv;
+    private int photo_number=0;
+    private boolean bl=true;
+
     public PhotoWallAdapter(Context context, int textViewResourceId, String[] objects,
                             GridView photoWall) {
         super(context, textViewResourceId, objects);
@@ -84,6 +89,15 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements OnScrollLi
         final ImageView photo = (ImageView) view.findViewById(R.id.photo);
         // 给ImageView设置一个Tag，保证异步加载图片时不会乱序
         photo.setTag(url);
+        System.out.println("this is photo url:"+url);
+
+        for(int i=0;i<photo_url.imageThumbUrls[0].length;i++){
+            if(url == photo_url.imageThumbUrls[0][i]){
+                tv = (TextView)view.findViewById(R.id.photo_name);
+                tv.setText("圖片編號："+photo_url.imageThumbUrls[1][i]);
+            }
+        }
+
         setImageView(url, photo);
         return view;
     }
@@ -131,6 +145,13 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements OnScrollLi
         return mMemoryCache.get(key);
     }
 
+
+    /**
+        listView滾動事件，scrollState有三種狀態:
+            SCROLL_STATE_FLING:開始滾動
+            SCROLL_STATE_TOUCH_SCROLL:正在滾動
+            SCROLL_STATE_IDLE:停止滾動
+     **/
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         // 仅当GridView静止时才去下载图片，GridView滑动时取消所有正在下载的任务
@@ -141,8 +162,11 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements OnScrollLi
         }
     }
 
+    /**
+        若手指只觸碰螢幕並不做其他動作，則只會觸發一次onScroll並不會觸發onScrollStateChanged
+     **/
     @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
                          int totalItemCount) {
         mFirstVisibleItem = firstVisibleItem;
         mVisibleItemCount = visibleItemCount;
@@ -166,7 +190,7 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements OnScrollLi
     private void loadBitmaps(int firstVisibleItem, int visibleItemCount) {
         try {
             for (int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++) {
-                String imageUrl = photo_url.imageThumbUrls[i];
+                String imageUrl = photo_url.imageThumbUrls[0][i];
                 Bitmap bitmap = getBitmapFromMemoryCache(imageUrl);
                 if (bitmap == null) {
                     BitmapWorkerTask task = new BitmapWorkerTask();
