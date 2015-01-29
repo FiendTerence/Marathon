@@ -1,9 +1,12 @@
 package com.example.terence.photo;
 
+
+import android.app.Activity;
+
 /**
  * Created by terence on 2015/1/20.
  */
-public class photo_url {
+public class photo_url extends Activity{
     public final static String[][] imageThumbUrls = new String[][]{{
             "https://lh6.googleusercontent.com/-55osAWw3x0Q/URquUtcFr5I/AAAAAAAAAbs/rWlj1RUKrYI/s160-c/A%252520Photographer.jpg",
             "https://lh4.googleusercontent.com/--dq8niRp7W4/URquVgmXvgI/AAAAAAAAAbs/-gnuLQfNnBA/s160-c/A%252520Song%252520of%252520Ice%252520and%252520Fire.jpg",
@@ -35,4 +38,5 @@ public class photo_url {
     },{
             "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27"
     }};
+
 }

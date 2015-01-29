@@ -4,9 +4,11 @@ package com.example.terence.photo;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -21,6 +23,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.terence.fragment.Fragment_all;
 import com.example.terence.marathon.R;
 
 public class PhotoWallAdapter extends ArrayAdapter<String> implements OnScrollListener {
@@ -55,13 +58,21 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements OnScrollLi
      */
     private boolean isFirstEnter = true;
 
+    /**
+     * tv 顯示圖片的編號
+     * imageThumbUrls 二維陣列 1.圖片的url 2.圖片對應的標號數
+     */
     private TextView tv;
+    private String[][] imageThumbUrls;
+
     private int photo_number=0;
     private boolean bl=true;
 
+
     public PhotoWallAdapter(Context context, int textViewResourceId, String[] objects,
-                            GridView photoWall) {
+                            GridView photoWall,String[][] imageThumbUrls) {
         super(context, textViewResourceId, objects);
+        this.imageThumbUrls = imageThumbUrls;
         mPhotoWall = photoWall;
         taskCollection = new HashSet<BitmapWorkerTask>();
         // 获取应用程序最大可用内存
@@ -90,11 +101,11 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements OnScrollLi
         // 给ImageView设置一个Tag，保证异步加载图片时不会乱序
         photo.setTag(url);
         System.out.println("this is photo url:"+url);
-
-        for(int i=0;i<photo_url.imageThumbUrls[0].length;i++){
-            if(url == photo_url.imageThumbUrls[0][i]){
+        //顯示圖片的編號數
+        for(int i=0;i<imageThumbUrls[0].length;i++){
+            if(url == imageThumbUrls[0][i]){
                 tv = (TextView)view.findViewById(R.id.photo_name);
-                tv.setText("圖片編號："+photo_url.imageThumbUrls[1][i]);
+                tv.setText("圖片編號："+imageThumbUrls[1][i]);
             }
         }
 
@@ -190,7 +201,7 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements OnScrollLi
     private void loadBitmaps(int firstVisibleItem, int visibleItemCount) {
         try {
             for (int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++) {
-                String imageUrl = photo_url.imageThumbUrls[0][i];
+                String imageUrl = imageThumbUrls[0][i];
                 Bitmap bitmap = getBitmapFromMemoryCache(imageUrl);
                 if (bitmap == null) {
                     BitmapWorkerTask task = new BitmapWorkerTask();
